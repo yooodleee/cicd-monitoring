@@ -10,3 +10,6 @@ GitHub Actions의 workflow 실행 이력을 모니터링하고, 수동 trigger �
 
 ✅ success!
 - [![Go CI](https://github.com/yooodleee/cicd-monitoring/actions/workflows/ci.yml/badge.svg)](https://github.com/yooodleee/cicd-monitoring/actions/workflows/ci.yml)
+
+📊 Dashboard
+![image](https://github.com/user-attachments/assets/0595de1a-3e1b-4a09-a9d4-0fa95d8b596f)
