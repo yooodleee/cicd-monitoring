@@ -1,7 +1,9 @@
 package router
 
 import (
+	"fmt"
 	"html/template"
+
 	"github.com/gofiber/fiber/v2"
 
 	githubaction "cicd-monitoring/github_action"
@@ -25,4 +27,24 @@ func SetupRoutes(app *fiber.App, client *githubaction.GitHubClient) {
 		c.Type("html")
 		return tmpl.Execute(c.Response().BodyWriter(), runs)
 	})
-}
+
+	// /trigger 라우트 추가
+	app.Post("/trigger", func(c *fiber.Ctx) error {
+		type TriggerRequest struct {
+			WorkflowFile string `json:"workflow_file"`
+			Branch		 string `json:"branch"`
+		}
+
+		var req TriggerRequest
+		if err := c.BodyParser(&req); err != nil {
+			return c.Status(400).SendString("Invalid request")
+		}
+
+		err := client.TriggerWorkflow(req.WorkflowFile, req.Branch, nil)
+		if err != nil {
+			return c.Status(500).SendString(fmt.Sprintf("Failed: %v", err))
+		}
+
+		return c.SendString("✅ Workflow triggered!")
+	})
+}	
