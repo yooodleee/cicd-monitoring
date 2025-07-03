@@ -19,8 +19,12 @@
     </ul>
     <h2>🛠️ Trigger Workflow</h2>
     <form action="/trigger" method="post">
-        Workflow File: <input name="workflow_file" value="ci.yml"><br>
-        Branch: <input name="branch" value="main"><br>
+        <label>Workflow File:</label>
+        <input type="text" name="workflow_file" value="ci.yml"><br>
+        
+        <label>Branch:</label>
+        <input type="text" name="branch" value="main"><br>
+        
         <button type="submit">Trigger</button>
     </form>
 </body>
