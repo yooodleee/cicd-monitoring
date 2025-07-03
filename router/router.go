@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"html/template"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 
@@ -11,15 +12,16 @@ import (
 
 
 func SetupRoutes(app *fiber.App, client *githubaction.GitHubClient) {
-	app.Get("/router", func(c *fiber.Ctx) error {
+	app.Get("/dashboard", func(c *fiber.Ctx) error {
 		runs, err := client.ListWorkflowRuns()
 		if err != nil {
-			return c.Status(500).SendString("Failed to load workflows")
+			return c.Status(500).SendString("GitHub API 에러")
 		}
 
 		// 간단한 템플릿 엔진 사용 (html/template)
-		tmpl, err := template.ParseFiles("cicd-monitoring/views/dashboard.html")
+		tmpl, err := template.ParseFiles("views/dashboard.html")
 		if err != nil {
+			log.Println("Template error:", err)
 			return c.Status(500).SendString("Failed to parse template")
 		}
 
