@@ -32,17 +32,14 @@ func SetupRoutes(app *fiber.App, client *githubaction.GitHubClient) {
 
 	// /trigger 라우트 추가
 	app.Post("/trigger", func(c *fiber.Ctx) error {
-		type TriggerRequest struct {
-			WorkflowFile string `json:"workflow_file"`
-			Branch		 string `json:"branch"`
+		WorkflowFile := c.FormValue("workflow_file")
+		Branch := c.FormValue("branch")
+
+		if WorkflowFile == "" || Branch == "" {
+			return c.Status(400).SendString("⚠️ workflow_file 또는 branch가 비어 있습니다.")
 		}
 
-		var req TriggerRequest
-		if err := c.BodyParser(&req); err != nil {
-			return c.Status(400).SendString("Invalid request")
-		}
-
-		err := client.TriggerWorkflow(req.WorkflowFile, req.Branch, nil)
+		err := client.TriggerWorkflow(WorkflowFile, Branch, nil)
 		if err != nil {
 			return c.Status(500).SendString(fmt.Sprintf("Failed: %v", err))
 		}
