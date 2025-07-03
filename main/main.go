@@ -19,7 +19,7 @@ func main() {
 	app := fiber.New()
 	router.SetupRoutes(app, client)
 
-	app.Listen(":8080")
+	app.Listen(":7070")
 
 	runs, err := client.ListWorkflowRuns()
 	if err != nil {
