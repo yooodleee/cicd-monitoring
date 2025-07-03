@@ -79,3 +79,24 @@ func (gh *GitHubClient) ListWorkflowRuns() ([]WorkflowRunSummary, error) {
 
 	return results, nil
 }
+
+
+// 수동 trigger 기능
+func (gh *GitHubClient) TriggerWorkflow(workflowFileName, branch string, inputs map[string]interface{}) error {
+	dispatch := github.CreateWorkflowDispatchEventRequest{
+		Ref: branch,
+		Inputs: inputs,
+	}
+
+	_, err := gh.client.Actions.CreateWorkflowDispatchEventByFileName(
+		gh.ctx,
+		gh.owner,
+		gh.repo,
+		workflowFileName,
+		dispatch,
+	)
+	if err != nil {
+		return fmt.Errorf("failed to dispatch workflow: %w", err)
+	}
+	return nil
+}
