@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CI/CD Dashboard</title>
+</head>
+<body>
+    <h1>📦 Recent Workflow Runs</h1>
+    <ul>
+        {{ range . }}
+            <li>
+                <strong>{{ .Conclusion | title }}</strong> - 
+                {{ .CommitMsg }} ({{ .Branch }}) by {{ .TriggeredBy }} | 
+                {{ .Duration }}
+            </li>
+        {{ else }}
+            <li>No workflow runs found.</li>
+        {{ end }}
+    </ul>
+</body>
+</html>

@@ -2,8 +2,10 @@ package main
 
 import (
 	githubaction "cicd-monitoring/github_action"
+	router "cicd-monitoring/router"
 	"fmt"
 	"os"
+	"github.com/gofiber/fiber/v2"
 )
 
 
@@ -13,6 +15,11 @@ func main() {
 	repo := os.Getenv("GITHUB_REPO")
 
 	client := githubaction.NewGitHubClient(token, owner, repo)
+
+	app := fiber.New()
+	router.SetupRoutes(app, client)
+
+	app.Listen(":8080")
 
 	runs, err := client.ListWorkflowRuns()
 	if err != nil {
