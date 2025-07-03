@@ -9,7 +9,7 @@
     <ul>
         {{ range . }}
             <li>
-                <strong>{{ .Conclusion | title }}</strong> - 
+                <strong>{{ .Conclusion }}</strong> - 
                 {{ .CommitMsg }} ({{ .Branch }}) by {{ .TriggeredBy }} | 
                 {{ .Duration }}
             </li>
