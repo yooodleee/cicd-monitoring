@@ -29,7 +29,7 @@ func main() {
 	for _, run := range runs {
 		fmt.Printf("✅ [%s] %s (%s) by %s | %s\n",
 			run.Conclusion,
-			run.CommtiMsg,
+			run.CommitMsg,
 			run.Branch,
 			run.TriggeredBy,
 			run.Duration,

@@ -15,7 +15,7 @@ type WorkflowRunSummary struct {
 	ID 			int64
 	Status 		string
 	Conclusion 	string
-	CommtiMsg 	string
+	CommitMsg 	string
 	Branch 		string
 	Duration 	time.Duration
 	TriggeredBy string
@@ -68,7 +68,7 @@ func (gh *GitHubClient) ListWorkflowRuns() ([]WorkflowRunSummary, error) {
 			ID: run.GetID(),
 			Status: run.GetStatus(),
 			Conclusion: run.GetConclusion(),
-			CommtiMsg: run.GetHeadCommit().GetMessage(),
+			CommitMsg: run.GetHeadCommit().GetMessage(),
 			Branch: run.GetHeadBranch(),
 			TriggeredBy: run.GetActor().GetLogin(),
 			CreatedAt: run.GetCreatedAt().Time,
