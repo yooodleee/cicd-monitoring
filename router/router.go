@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 
@@ -45,5 +46,27 @@ func SetupRoutes(app *fiber.App, client *githubaction.GitHubClient) {
 		}
 
 		return c.SendString("✅ Workflow triggered!")
+	})
+
+	// Job 목록 조회 router 추가
+	app.Get("/run/:id", func(c *fiber.Ctx) error {
+		runIDStr := c.Params("id")
+		runID, err := strconv.ParseInt(runIDStr, 10, 64)
+		if err != nil {
+			return c.Status(400).SendString("Invalid run ID")
+		}
+
+		jobs, err := client.GetJobsForRun(runID)
+		if err != nil {
+			return c.Status(500).SendString("Failed to fetch job details")
+		}
+
+		tmpl, err := template.ParseFiles("views/job_detail.html")
+		if err != nil {
+			return c.Status(500).SendString("Template error")
+		}
+
+		c.Type("html")
+		return tmpl.Execute(c.Response().BodyWriter(), jobs)
 	})
 }	
