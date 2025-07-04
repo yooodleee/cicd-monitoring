@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Run Job Details</title>
+</head>
+<body>
+    <h1>🫙 Workflow Job Details</h1>
+    <ul>
+        {{ range . }}
+            <li>
+                <strong>{{ .Name }}</strong><br>
+                Status: {{ .Status }} / {{ .Conclusion }}<br>
+                StartL {{ .StartedAt }}<br>
+                End: {{ .CompletedAt }}
+            </li>
+        {{ else }}
+            <li>No jobs found for this run.</li>
+        {{ else }}
+    </ul>
+    <a href="/dashboard">⬅️ 돌아가기</a>
+</body>
+</html>
