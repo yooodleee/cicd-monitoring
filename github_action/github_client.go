@@ -100,3 +100,36 @@ func (gh *GitHubClient) TriggerWorkflow(workflowFileName, branch string, inputs 
 	}
 	return nil
 }
+
+
+// Job 목록 조회
+type JobDetail struct {
+	Name       string
+	Status     string
+	Conclusion string
+	StartedAt  time.Time
+	CompletedAt time.Time
+}
+
+func (gh *GitHubClient) GetJobsForRun(runID int64) ([]JobDetail, error) {
+	opts := &github.ListWorkflowJobsOptions{
+		ListOptions: github.ListOptions{PerPage: 20},
+	}
+	jobs, _, err := gh.client.Actions.ListWorkflowJobs(gh.ctx, gh.owner, gh.repo, runID, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	var details []JobDetail
+	for _, job := range jobs.Jobs {
+		d := JobDetail{
+			Name:       job.GetName(),
+			Status:     job.GetStatus(),
+			Conclusion: job.GetConclusion(),
+			StartedAt:  job.GetStartedAt().Time,
+			CompletedAt: job.GetCompletedAt().Time,
+		}
+		details = append(details, d)
+	}
+	return details, nil
+}
