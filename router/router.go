@@ -63,6 +63,7 @@ func SetupRoutes(app *fiber.App, client *githubaction.GitHubClient) {
 
 		tmpl, err := template.ParseFiles("views/job_detail.html")
 		if err != nil {
+			log.Println("Template error:", err)
 			return c.Status(500).SendString("Template error")
 		}
 
