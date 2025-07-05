@@ -11,7 +11,8 @@
             <li>
                 <strong>{{ .Conclusion }}</strong> - 
                 {{ .CommitMsg }} ({{ .Branch }}) by {{ .TriggeredBy }} | 
-                {{ .Duration }}
+                {{ .Duration }} |
+                <a href="/run/{{ .ID }}">🔭 상세 보기</a>
             </li>
         {{ else }}
             <li>No workflow runs found.</li>
