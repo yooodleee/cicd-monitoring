@@ -13,6 +13,10 @@ import (
 
 
 func SetupRoutes(app *fiber.App, client *githubaction.GitHubClient) {
+	app.Get("/", func (c *fiber.Ctx) error {
+		return c.Redirect("/dashboard")
+	})
+
 	app.Get("/dashboard", func(c *fiber.Ctx) error {
 		runs, err := client.ListWorkflowRuns()
 		if err != nil {
