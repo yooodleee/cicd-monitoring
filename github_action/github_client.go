@@ -102,13 +102,23 @@ func (gh *GitHubClient) TriggerWorkflow(workflowFileName, branch string, inputs 
 }
 
 
+type StepDetail struct {
+	Name        string
+	Status      string
+	Conclusion  string
+	Number      int
+	StartedAt   time.Time
+	CompletedAt time.Time
+}
+
 // Job 목록 조회
 type JobDetail struct {
-	Name       string
-	Status     string
-	Conclusion string
-	StartedAt  time.Time
+	Name        string
+	Status      string
+	Conclusion  string
+	StartedAt   time.Time
 	CompletedAt time.Time
+	Steps 		[]StepDetail
 }
 
 func (gh *GitHubClient) GetJobsForRun(runID int64) ([]JobDetail, error) {
@@ -122,12 +132,25 @@ func (gh *GitHubClient) GetJobsForRun(runID int64) ([]JobDetail, error) {
 
 	var details []JobDetail
 	for _, job := range jobs.Jobs {
+		var steps []StepDetail
+		for _, s := range job.Steps {
+			steps = append(steps, StepDetail{
+				Name: s.GetName(),
+				Status: s.GetStatus(),
+				Conclusion: s.GetConclusion(),
+				Number: int(s.GetNumber()),
+				StartedAt: s.GetStartedAt().Time,
+				CompletedAt: s.GetCompletedAt().Time,
+			})
+		}
+		
 		d := JobDetail{
 			Name:       job.GetName(),
 			Status:     job.GetStatus(),
 			Conclusion: job.GetConclusion(),
 			StartedAt:  job.GetStartedAt().Time,
 			CompletedAt: job.GetCompletedAt().Time,
+			Steps: steps,
 		}
 		details = append(details, d)
 	}

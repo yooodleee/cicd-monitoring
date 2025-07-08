@@ -13,6 +13,17 @@
                 Status: {{ .Status }} / {{ .Conclusion }}<br>
                 StartL {{ .StartedAt }}<br>
                 End: {{ .CompletedAt }}
+
+                <ul>
+                    {{ range .Steps }}
+                        <li>
+                            🔹 Step {{ .Number }} - <strong>{{ .Name }}</strong><br>
+                            📊 {{ .Status }} / {{ .Conclusion }}<br>
+                            ⌛ {{ .StartedAt }} - {{ .CompletedAt }}
+                        </li>
+                    {{ end }}
+                </ul>
+                <hr>
             </li>
         {{ else }}
             <li>No jobs found for this run.</li>
